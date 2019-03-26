@@ -113,37 +113,46 @@ $payment.on('change', function(event) {
 
 let validated = false;
 
+//validate form before submitting
 $registerButton.on('click', function(event) {
     event.preventDefault();
     const nameRegex = /^\w+$/i;
     // email regex from: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    
-    console.log(nameRegex.test($('#name').val()));
-    console.log(emailRegex.test($('#mail').val()));
-    console.log($('.activities input').prop('checked'));
-
-    if (nameRegex.test($('#name').val()) &&         //validate name
-        emailRegex.test($('#mail').val()) &&        //validate email
-        $('.activities input').prop('checked') &&   //validate activities
-        paymentValidated()) {                       //validate payment
-        $('form')[0].submit();
-    }
-});
-
-function paymentValidated() {
     const ccRegex = /\d{13,16}/;
     const zipRegex = /\d{5}/;
     const cvvRegex = /\d{3}/;
 
-    if ($payment.val() !== 'credit card') {
-        return true;
-    } else {
-        return(ccRegex.test($('#cc-num').val()) &&
-                zipRegex.test($('#zip').val()) &&
-                cvvRegex.test($('#cvv').val()))
+    let nameValidate = nameRegex.test($('#name').val());
+    let emailValidate = emailRegex.test($('#mail').val());
+    let activitiesValidate = $('.activities input').prop('checked');
+    let ccValidate = ccRegex.test($('#cc-num').val());
+    let zipValidate = zipRegex.test($('#zip').val());
+    let cvvValidate = cvvRegex.test($('#cvv').val());
+    
+    if (nameValidate &&         //validate name
+        emailValidate &&        //validate email
+        activitiesValidate &&   //validate activities
+        ccValidate &&
+        zipValidate &&
+        cvvValidate) {                       //validate payment
+        $('form')[0].submit();
     }
-}
+});
+
+// function paymentValidated() {
+//     const ccRegex = /\d{13,16}/;
+//     const zipRegex = /\d{5}/;
+//     const cvvRegex = /\d{3}/;
+
+//     if ($payment.val() !== 'credit card') {
+//         return true;
+//     } else {
+//         return(ccRegex.test($('#cc-num').val()) &&
+//                 zipRegex.test($('#zip').val()) &&
+//                 cvvRegex.test($('#cvv').val()))
+//     }
+// }
 
 
 
