@@ -15,6 +15,23 @@ const $paypal = $creditCard.next();
 const $bitcoin = $paypal.next();
 const $registerButton = $('button');
 
+//create error messages
+const $nameError = $('<span class="error">Please input a valid name.</span>');
+const $emailError = $('<span class="error">Please input a valid email.</span>');
+const $activitiesError = $('<span class="error">Please register for activities.</span>');
+const $ccError = $('<span class="error">Please input a valid credit card number.</span>');
+const $zipError = $('<span class="error">Please input a valid zip code.</span>');
+const $cvvError = $('<span class="error">Please input a valid cvv code.</span>');
+$('#name').prev().after($nameError);
+$('#mail').prev().after($emailError);
+$('.activities legend').after($activitiesError);
+$('#cc-num').prev().after($ccError);
+$('#zip').prev().after($zipError);
+$('#cvv').prev().after($cvvError);
+const $errors = $('.error');
+$errors.hide();
+$errors.css('color', 'red');
+
 //set up page on load
 $('#name').focus();
 $otherTitle.hide();
@@ -113,6 +130,8 @@ $payment.on('change', function(event) {
 
 let validated = false;
 
+//TODO: make sure we check cc validation only if cc is selected
+
 //validate form before submitting
 $registerButton.on('click', function(event) {
     event.preventDefault();
@@ -129,31 +148,25 @@ $registerButton.on('click', function(event) {
     let ccValidate = ccRegex.test($('#cc-num').val());
     let zipValidate = zipRegex.test($('#zip').val());
     let cvvValidate = cvvRegex.test($('#cvv').val());
+    let paymentValidate = true;
+
+    if (nameValidate) {$nameError.hide()} else {$nameError.show()}
+    if (emailValidate) {$emailError.hide()} else {$emailError.show();}
+    if (activitiesValidate) {$activitiesError.hide()} else {$activitiesError.show();}
+    if ($payment.val() === 'credit card'){
+        if (ccValidate) {$ccError.hide()} else {$ccError.show();}
+        if (zipValidate) {$zipError.hide()} else {$zipError.show();}
+        if (cvvValidate) {$cvvError.hide()} else {$cvvError.show();}
+        paymentValidate = (ccValidate && zipValidate && cvvValidate);
+    }
     
     if (nameValidate &&         //validate name
         emailValidate &&        //validate email
         activitiesValidate &&   //validate activities
-        ccValidate &&
-        zipValidate &&
-        cvvValidate) {                       //validate payment
+        paymentValidate) {                       //validate payment
         $('form')[0].submit();
     }
 });
-
-// function paymentValidated() {
-//     const ccRegex = /\d{13,16}/;
-//     const zipRegex = /\d{5}/;
-//     const cvvRegex = /\d{3}/;
-
-//     if ($payment.val() !== 'credit card') {
-//         return true;
-//     } else {
-//         return(ccRegex.test($('#cc-num').val()) &&
-//                 zipRegex.test($('#zip').val()) &&
-//                 cvvRegex.test($('#cvv').val()))
-//     }
-// }
-
 
 
 
