@@ -19,13 +19,15 @@ const $registerButton = $('button');
 const $nameError = $('<span class="error">Please input a valid name.</span>');
 const $emailError = $('<span class="error">Please input a valid email.</span>');
 const $activitiesError = $('<span class="error">Please register for activities.</span>');
-const $ccError = $('<span class="error">Please input a valid credit card number.</span>');
+const $ccError = $('<span class="error">Please input a number between 13 and 16 digits long.</span>');
+const $ccError2 = $('<span class="error">Please input a credit card number.</span>');
 const $zipError = $('<span class="error">Please input a valid zip code.</span>');
 const $cvvError = $('<span class="error">Please input a valid cvv code.</span>');
 $('#name').prev().after($nameError);
 $('#mail').prev().after($emailError);
 $('.activities legend').after($activitiesError);
 $('#cc-num').prev().after($ccError);
+$('#cc-num').prev().after($ccError2);
 $('#zip').prev().after($zipError);
 $('#cvv').prev().after($cvvError);
 const $errors = $('.error');
@@ -154,7 +156,7 @@ $registerButton.on('click', function(event) {
     if (emailValidate) {$emailError.hide()} else {$emailError.show();}
     if (activitiesValidate) {$activitiesError.hide()} else {$activitiesError.show();}
     if ($payment.val() === 'credit card'){
-        if (ccValidate) {$ccError.hide()} else {$ccError.show();}
+        ccErrorGenerate(ccValidate);
         if (zipValidate) {$zipError.hide()} else {$zipError.show();}
         if (cvvValidate) {$cvvError.hide()} else {$cvvError.show();}
         paymentValidate = (ccValidate && zipValidate && cvvValidate);
@@ -168,7 +170,18 @@ $registerButton.on('click', function(event) {
     }
 });
 
-
+function ccErrorGenerate(ccValidate) {
+    if ($('#cc-num').val() === '') {
+        $ccError2.show();
+        $ccError.hide();
+    } else if (ccValidate) {
+        $ccError2.hide();
+        $ccError.hide();
+    } else {
+        $ccError2.hide();
+        $ccError.show();
+    }
+}
 
 
 
