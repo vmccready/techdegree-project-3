@@ -46,7 +46,6 @@ $('#payment option').eq(1).prop('selected', true);
 $('#payment option').eq(0).prop('hidden', true);
 $paypal.hide();
 $bitcoin.hide();
-$color.hide();
 
 // Show other job input field if 'other' job option selected
 $title.on('change', function() {
@@ -57,10 +56,8 @@ $title.on('change', function() {
     }
 });
 
-
 // Only show colors for specific design
 $design.on('change', function() {
-    $color.show();
     let regex;
     if($design.val() === 'js puns') {
         regex = /(JS Puns)/;
@@ -145,20 +142,18 @@ $registerButton.on('click', function(event) {
     const zipRegex = /\d{5}/;
     const cvvRegex = /\d{3}/;
 
-    //validate input
     let nameValidate = nameRegex.test($('#name').val());
     let emailValidate = emailRegex.test($('#mail').val());
-    let activitiesValidate = $('.activities input:checkbox:checked').length > 0;
+    let activitiesValidate = $('.activities input').prop('checked');
     let ccValidate = ccRegex.test($('#cc-num').val());
     let zipValidate = zipRegex.test($('#zip').val());
     let cvvValidate = cvvRegex.test($('#cvv').val());
     let paymentValidate = true;
 
-    //show applicable error message
     if (nameValidate) {$nameError.hide()} else {$nameError.show()}
     if (emailValidate) {$emailError.hide()} else {$emailError.show();}
     if (activitiesValidate) {$activitiesError.hide()} else {$activitiesError.show();}
-    if ($payment.val() === 'credit card'){ //on validate cc if chosen
+    if ($payment.val() === 'credit card'){
         if (ccValidate) {$ccError.hide()} else {$ccError.show();}
         if (zipValidate) {$zipError.hide()} else {$zipError.show();}
         if (cvvValidate) {$cvvError.hide()} else {$cvvError.show();}
