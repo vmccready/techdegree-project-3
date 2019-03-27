@@ -1,3 +1,9 @@
+/******************************************
+Treehouse Techdegree:
+FSJS project 3 - Interactive form
+completed by Vinson McCready
+******************************************/
+
 
 //define variables
 const $otherTitle = $('#other-title');
@@ -117,6 +123,7 @@ $('.activities').on('change', function(event) {
     $('#totalCost span').text(totalCost);
 });
 
+//Show descriptions for appropriate payment type
 $payment.on('change', function(event) {
     $payment.nextAll().hide();
     const paymentMethod = event.target.value;
@@ -130,7 +137,6 @@ $payment.on('change', function(event) {
 
 });
 
-let validated = false;
 
 //TODO: make sure we check cc validation only if cc is selected
 
@@ -144,6 +150,7 @@ $registerButton.on('click', function(event) {
     const zipRegex = /\d{5}/;
     const cvvRegex = /\d{3}/;
 
+    //validate input
     let nameValidate = nameRegex.test($('#name').val());
     let emailValidate = emailRegex.test($('#mail').val());
     let activitiesValidate = $('.activities input').prop('checked');
@@ -152,6 +159,7 @@ $registerButton.on('click', function(event) {
     let cvvValidate = cvvRegex.test($('#cvv').val());
     let paymentValidate = true;
 
+    //show appropriate error messages
     if (nameValidate) {$nameError.hide()} else {$nameError.show()}
     if (emailValidate) {$emailError.hide()} else {$emailError.show();}
     if (activitiesValidate) {$activitiesError.hide()} else {$activitiesError.show();}
@@ -170,6 +178,7 @@ $registerButton.on('click', function(event) {
     }
 });
 
+//add conditional errors for CC
 function ccErrorGenerate(ccValidate) {
     if ($('#cc-num').val() === '') {
         $ccError2.show();
